@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WasteWise – Waste Segregation Assistant</title>
+    <meta name="description" content="College IKS Practical Experiment 08: Waste Segregation Chatbot demonstrating Indian Logic (Observation, Evidence, Inference, Conclusion)." />
+    <meta property="og:title" content="WasteWise – Waste Segregation Assistant" />
+    <meta property="og:description" content="College IKS Practical Experiment 08: Waste Segregation Chatbot demonstrating Indian Logic." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="header-container">
+        <div class="brand-section">
+          <div class="brand-logo-icon" aria-hidden="true">🌱</div>
+          <div class="brand-titles">
+            <h1>WasteWise</h1>
+            <p class="subtitle">Smart Waste Segregation Assistant</p>
+            <p class="tagline">Observe • Understand • Infer • Dispose Responsibly</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div id="apiStatusBadge" class="status-badge local">
+            <span class="status-dot"></span> Nyaya Offline Engine
+          </div>
+          <button id="apiKeyBtn" class="btn-header primary" title="Configure Google Gemini API Key">
+            🔑 API Key
+          </button>
+          <button id="clearChatBtn" class="btn-header" title="Clear chat history and reset session">
+            🗑️ Clear Chat
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="app-main">
+      <!-- Left Sidebar: Flowchart, Categories & IKS Logic -->
+      <aside class="sidebar">
+        <!-- Decision Tree Section -->
+        <section class="info-card">
+          <h2 class="card-title">
+            <span>🌿</span> How WasteWise Decides
+          </h2>
+          <div class="decision-tree-container">
+            <div id="treeNodeItem" class="tree-node">
+              User enters waste item
+            </div>
+            <div class="tree-arrow">↓</div>
+            <div style="font-weight: 700; color: #1e293b; text-align: center; margin-bottom: 0.25rem;">
+              Is it biodegradable?
+            </div>
+            <div class="tree-branch">
+              <div id="treeRowBioYes" class="tree-row">
+                <span class="tree-tag yes">YES</span>
+                <span class="tree-label">🟢 Wet / Organic Waste</span>
+              </div>
+              <div class="tree-row">
+                <span class="tree-tag no">NO</span>
+                <span class="tree-label">Check Recyclability ↓</span>
+              </div>
+            </div>
+
+            <div class="tree-arrow">↓</div>
+            <div style="font-weight: 700; color: #1e293b; text-align: center; margin-bottom: 0.25rem;">
+              Is it recyclable?
+            </div>
+            <div class="tree-branch">
+              <div id="treeRowRecycYes" class="tree-row">
+                <span class="tree-tag yes">YES</span>
+                <span class="tree-label">🔵 Dry / Recyclable Waste</span>
+              </div>
+              <div class="tree-row">
+                <span class="tree-tag no">NO</span>
+                <span class="tree-label">Check Toxicity / Electronics ↓</span>
+              </div>
+            </div>
+
+            <div class="tree-arrow">↓</div>
+            <div style="font-weight: 700; color: #1e293b; text-align: center; margin-bottom: 0.25rem;">
+              Is it hazardous or electronic?
+            </div>
+            <div class="tree-branch">
+              <div id="treeRowHazard" class="tree-row">
+                <span class="tree-tag yes">YES</span>
+                <span class="tree-label">🔴 Hazard / 🟣 E-Waste</span>
+              </div>
+              <div id="treeRowGeneral" class="tree-row">
+                <span class="tree-tag no">NO</span>
+                <span class="tree-label">⚫ General / Mixed Waste</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5 Waste Categories Reference Card -->
+        <section class="info-card">
+          <h2 class="card-title">
+            <span>🗑️</span> Waste Segregation Categories
+          </h2>
+          <div class="category-badges-grid">
+            <div class="cat-item wet">
+              <div class="cat-icon">🟢</div>
+              <div class="cat-content">
+                <h4>Wet / Biodegradable Waste</h4>
+                <p>Peels, food scraps, tea leaves, flowers, egg shells.</p>
+              </div>
+            </div>
+
+            <div class="cat-item dry">
+              <div class="cat-icon">🔵</div>
+              <div class="cat-content">
+                <h4>Dry / Recyclable Waste</h4>
+                <p>Newspapers, cardboard, clean PET bottles, cans.</p>
+              </div>
+            </div>
+
+            <div class="cat-item hazard">
+              <div class="cat-icon">🔴</div>
+              <div class="cat-content">
+                <h4>Hazardous Waste</h4>
+                <p>Used batteries, chemicals, broken glass, sharp blades.</p>
+              </div>
+            </div>
+
+            <div class="cat-item ewaste">
+              <div class="cat-icon">🟣</div>
+              <div class="cat-content">
+                <h4>E-Waste (Electronics)</h4>
+                <p>Old mobiles, chargers, headphones, circuit boards.</p>
+              </div>
+            </div>
+
+            <div class="cat-item general">
+              <div class="cat-icon">⚫</div>
+              <div class="cat-content">
+                <h4>General / Other Waste</h4>
+                <p>Soiled wrappers, swept dust, non-recyclable items.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Indian Logic Framework Info -->
+        <section class="info-card iks-card">
+          <h2 class="card-title">
+            <span>📜</span> Indian Logic (Nyaya Tarka)
+          </h2>
+          <div class="iks-steps-list">
+            <div class="iks-step">
+              <div class="iks-step-num">1</div>
+              <div class="iks-step-text">
+                <strong>Observation (Pratyaksha):</strong> Empirical perception of the discarded object and condition.
+              </div>
+            </div>
+            <div class="iks-step">
+              <div class="iks-step-num">2</div>
+              <div class="iks-step-text">
+                <strong>Evidence (Hetu):</strong> Physical/chemical ground, organic origin, or polymer composition.
+              </div>
+            </div>
+            <div class="iks-step">
+              <div class="iks-step-num">3</div>
+              <div class="iks-step-text">
+                <strong>Inference (Anumana):</strong> Universal deduction connecting material nature to biodegradation or recovery.
+              </div>
+            </div>
+            <div class="iks-step">
+              <div class="iks-step-num">4</div>
+              <div class="iks-step-text">
+                <strong>Conclusion (Nigamana):</strong> Direct bin assignment and responsible campus disposal action.
+              </div>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Right Chat Console -->
+      <section class="chat-wrapper" aria-label="WasteWise Chatbot Console">
+        <!-- Chat Header Bar -->
+        <div class="chat-header-bar">
+          <div class="chat-partner-info">
+            <div class="chat-partner-avatar">🌱</div>
+            <div class="chat-partner-details">
+              <h3>WasteWise Assistant</h3>
+              <span>● Online & Ready to Segregate</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrollable Messages Container -->
+        <div id="chatMessages" class="chat-messages" role="log" aria-live="polite">
+          <!-- Initial Welcome Message -->
+          <div class="message-row bot">
+            <div class="msg-avatar">🌱</div>
+            <div class="msg-bubble">
+              <p><strong>Hi! I’m WasteWise 🌱.</strong> I can help you identify the correct waste category and disposal method.</p>
+              <p style="margin-top: 0.5rem; color: #334155; font-size: 0.875rem;">
+                Please enter the name of any waste item (or choose from the quick examples below) to analyze it using the Indian Logic reasoning framework:
+                <br />
+                <span style="font-weight: 600; color: #166534;">Observation → Evidence → Inference → Conclusion</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Example Buttons Section -->
+        <div class="quick-examples-section">
+          <div class="examples-label">Quick Test Examples:</div>
+          <div class="example-chips-container">
+            <button class="chip-btn" data-item="Banana peel">🍌 Banana Peel</button>
+            <button class="chip-btn" data-item="Plastic bottle">🧴 Plastic Bottle</button>
+            <button class="chip-btn" data-item="Newspaper">📰 Newspaper</button>
+            <button class="chip-btn" data-item="Used battery">🔋 Battery</button>
+            <button class="chip-btn" data-item="Old mobile phone">📱 Old Phone</button>
+            <button class="chip-btn" data-item="Food leftovers">🍱 Food Waste</button>
+            <button class="chip-btn" data-item="Broken glass">🪟 Broken Glass</button>
+            <button class="chip-btn" data-item="Cardboard box">📦 Cardboard Box</button>
+          </div>
+        </div>
+
+        <!-- Chat Input Form -->
+        <div class="chat-input-bar">
+          <input
+            type="text"
+            id="chatInput"
+            class="chat-input"
+            placeholder="Type a waste item (e.g., coconut shell, tea bag, foil, milk packet)..."
+            autocomplete="off"
+            aria-label="Waste item input"
+          />
+          <button id="sendBtn" class="send-btn" aria-label="Send message">
+            <span>Send</span>
+            <span>➤</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- App Footer with Practical Experiment Credentials -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-academic">
+          <strong>IKS Practical – Experiment 08</strong>
+          <span>Topic: <strong>Waste Segregation Chatbot</strong></span>
+          <span class="faculty-badge">Faculty-in-Charge: Ms. Tejal D’mello</span>
+        </div>
+        <div class="footer-iks-note">
+          Demonstrates the Indian Logic epistemology (Nyaya Darshana) applied to environmental sustainability and solid waste management.
+        </div>
+      </div>
+    </footer>
+
+    <!-- API Key Settings Modal -->
+    <div id="apiKeyModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 id="modalTitle">🔑 Google Gemini API Settings</h3>
+          <button id="closeApiKeyModal" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="form-help">
+            You can connect your own <strong>Google Gemini API key</strong> for live AI reasoning.
+            If left blank, WasteWise uses its built-in <strong>Nyaya Logic Offline Engine</strong> with complete coverage for all experiment items!
+          </p>
+          <div class="form-group">
+            <label for="apiKeyInput">Gemini API Key:</label>
+            <input
+              type="password"
+              id="apiKeyInput"
+              class="form-input"
+              placeholder="AIzaSy..."
+              autocomplete="off"
+            />
+            <span class="form-help">
+              Key is stored only in your browser's private local storage. Get a key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">Google AI Studio</a>.
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="modelSelect">Gemini Model:</label>
+            <select id="modelSelect" class="form-input">
+              <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended / Fast)</option>
+              <option value="gemini-3.8-flash">gemini-3.8-flash (Latest Flash)</option>
+              <option value="gemini-flash-latest">gemini-flash-latest</option>
+              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="saveApiKeyBtn" class="btn-header primary">Save Configuration</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

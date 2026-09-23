@@ -1,0 +1,6 @@
+{
+  "name": "WasteWise - Waste Segregation Assistant",
+  "description": "Educational IKS practical chatbot demonstrating Indian Logic (Observation, Evidence, Inference, Conclusion) for smart waste categorization and safe disposal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
